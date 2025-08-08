@@ -1,4 +1,4 @@
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTimer, QTime, QLocal
 from PyQt5.QtWidgets import(
     QApplication, QWidget,
     QHBoxLayout, QVBoxLayout,
@@ -6,8 +6,18 @@ from PyQt5.QtWidgets import(
     QLabel, QGroupBox,
     QListWidget, QRadioButton
 )
+from PyQt5.QtGui import QDoubleValidator, QIntValidator, QFont
 from instr import *
 from final_win import *
+
+class experiment():
+    def __init__ (self,age,test1,test2,test3):
+        self.age = age
+        self.t1 = test1
+        self.t2 = test2
+        self.t3 = test3
+
+
 
 class TestWin(QWidget):
     def __init__(self):
@@ -20,6 +30,8 @@ class TestWin(QWidget):
     def next_click(self):
         self.tw = TestWin()
         self.hide()
+        
+
     def connects(self):
         self.btn_next.clicked.connect(self.next_click)
 
@@ -74,7 +86,36 @@ class TestWin(QWidget):
         self.setLayout(self.h_line)
     def next_click(self):
         self.hide()
-        self.fw = FinalWin()
+        self.exp = experiment(self.line_age.text(), self.line_test1.text(),self.line_test2.text(), self.line_test3.text())
+    def connects(self):
+        self.btn_next.clicked.connect(self.next_click)
+        self.fw = FinalWin(self.exp)
+    def timer_test(self):
+        global Time
+        time = QTime(0, 1, 0)
+        self.timer = QTime()
+        self.timer.timeout.connect(self.timer2Event)
+
+    def timer_final(self):
+        global Time
+        time = QTime(0, 1, 0)
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.timer3Event)\
+        self.timer.start(1000)
+
+    def timer1Event(self):
+        global Time
+        time = time.addSecs(-1)
+        self.text_timer.setText(time.toString("hh:mm:ss"))
+        self.text_timer.setText(QFont("Time", 36,QFont.bolb))
+        self.text_timer.setStylesheet("Color: rgb(0,0,0)")
+        if time.toString("hh:mm:ss") == "00:00:00":
+            self.timer.stop()
+
+    def timer2Event(self):
+        global Time
+        time = time.addSecs(-1)
+
 
     def connects(self):
         self.btn_next.clicked.connect(self.next_click)
@@ -85,4 +126,3 @@ class TestWin(QWidget):
         self.move(win_x, win_y)
 
     
-
