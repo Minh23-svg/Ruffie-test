@@ -14,7 +14,7 @@ class MainWin(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
-        self.connnects()
+        self.connects()
         self.set_appear()
         self.show()
     def initUI(self):
@@ -23,7 +23,7 @@ class MainWin(QWidget):
         self.instruction = QLabel(txt_instruction)
 
         self.layout_line = QVBoxLayout()
-        self.Layout_line.addWidget(self.hello_text,alignment = Qt.AlignLeft)
+        self.layout_line.addWidget(self.hello_text,alignment = Qt.AlignLeft)
         self.layout_line.addWidget(self.instruction,alignment = Qt.AlignLeft)
         self.layout_line.addWidget(self.btn_next, alignment= Qt.AlignCenter)
 
@@ -36,7 +36,7 @@ class MainWin(QWidget):
         self.btn_next.clicked.connect(self.next_click)
     def set_appear(self):
         self.setWindowTitle(txt_title)
-        self.resize(win_width. win_height)
+        self.resize(win_width, win_height)
         self.move(win_x,win_y)
 
 app = QApplication([])

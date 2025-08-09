@@ -1,4 +1,4 @@
-from PyQt5.QtCore import Qt, QTimer, QTime, QLocal
+from PyQt5.QtCore import Qt, QTimer, QTime
 from PyQt5.QtWidgets import(
     QApplication, QWidget,
     QHBoxLayout, QVBoxLayout,
@@ -10,8 +10,8 @@ from PyQt5.QtGui import QDoubleValidator, QIntValidator, QFont
 from instr import *
 from final_win import *
 
-class experiment():
-    def __init__ (self,age,test1,test2,test3):
+class Experiment():
+    def __init__(self,age,test1,test2,test3):
         self.age = age
         self.t1 = test1
         self.t2 = test2
@@ -23,7 +23,7 @@ class TestWin(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
-        self.connnects()
+        self.connects()
         self.set_appear()
         self.show()
 
@@ -34,10 +34,13 @@ class TestWin(QWidget):
 
     def connects(self):
         self.btn_next.clicked.connect(self.next_click)
+        self.btn_test1.clicked.connect(self.timer_test)
+        self.btn_test2.clicked.connect(self.timer_sits)
+        self.btn_test2.clicked.connect(self.timer_final)
 
     def set_appear(self):
         self.setWindowTitle(txt_title)
-        self.resize(win_width. win_height)
+        self.resize(win_width, win_height)
         self.move(win_x,win_y)
 
     def initUI(self):
@@ -61,24 +64,24 @@ class TestWin(QWidget):
         
         self.l_line = QVBoxLayout()
         self.r_line = QVBoxLayout()
-        self.h_line = QVBoxLayout()
+        self.h_line = QHBoxLayout()
 
 
         self.r_line.addWidget(self.text_timer, alignment= Qt.AlignCenter)
         self.l_line.addWidget(self.text_name, alignment= Qt.AlignLeft)
-        self.r_line.addWidget(self.line_name, alignment= Qt.Alignleft)
-        self.r_line.addWidget(self.text_age, alignment= Qt.AlignLeft)
-        self.r_line.addWidget(self.line_age, alignment= Qt.AlignLeft)
-        self.r_line.addWidget(self.txt_test1, alignment= Qt.AlignLeft)
-        self.r_line.addWidget(self.btn_test1, alignment= Qt.AlignLeft)
-        self.r_line.addWidget(self.line_test1, alignment= Qt.AlignLeft)
-        self.r_line.addWidget(self.txt_test2, alignment= Qt.AlignLeft)
-        self.r_line.addWidget(self.btn_test2, alignment= Qt.AlignLeft)
-        self.r_line.addWidget(self.line_test2, alignment= Qt.AlignLeft)
-        self.r_line.addWidget(self.txt_test3, alignment= Qt.AlignLeft)
-        self.r_line.addWidget(self.btn_test3, alignment= Qt.AlignLeft)
-        self.r_line.addWidget(self.line_test3, alignment= Qt.AlignLeft)
-        self.r_line.addWidget(self.btn_next, alignment= Qt.AlignLeft)
+        self.l_line.addWidget(self.line_name, alignment= Qt.AlignLeft)
+        self.l_line.addWidget(self.text_age, alignment= Qt.AlignLeft)
+        self.l_line.addWidget(self.line_age, alignment= Qt.AlignLeft)
+        self.l_line.addWidget(self.text_test1, alignment= Qt.AlignLeft)
+        self.l_line.addWidget(self.btn_test1, alignment= Qt.AlignLeft)
+        self.l_line.addWidget(self.line_test1, alignment= Qt.AlignLeft)
+        self.l_line.addWidget(self.text_test2, alignment= Qt.AlignLeft)
+        self.l_line.addWidget(self.btn_test2, alignment= Qt.AlignLeft)
+        self.l_line.addWidget(self.line_test2, alignment= Qt.AlignLeft)
+        self.l_line.addWidget(self.text_test3, alignment= Qt.AlignLeft)
+        self.l_line.addWidget(self.btn_test3, alignment= Qt.AlignLeft)
+        self.l_line.addWidget(self.line_test3, alignment= Qt.AlignLeft)
+        self.l_line.addWidget(self.btn_next, alignment= Qt.AlignLeft)
 
         self.h_line.addLayout(self.l_line)
         self.h_line.addLayout(self.r_line)
@@ -86,7 +89,8 @@ class TestWin(QWidget):
         self.setLayout(self.h_line)
     def next_click(self):
         self.hide()
-        self.exp = experiment(self.line_age.text(), self.line_test1.text(),self.line_test2.text(), self.line_test3.text())
+        self.exp = Experiment(int(self.line_age.text()), self.line_test1.text(),self.line_test2.text(), self.line_test3.text())
+        self.fw = FinalWin(self.exp)
     def connects(self):
         self.btn_next.clicked.connect(self.next_click)
         self.fw = FinalWin(self.exp)
@@ -100,14 +104,14 @@ class TestWin(QWidget):
         global Time
         time = QTime(0, 1, 0)
         self.timer = QTimer()
-        self.timer.timeout.connect(self.timer3Event)\
+        self.timer.timeout.connect(self.timer3Event)
         self.timer.start(1000)
 
     def timer1Event(self):
         global Time
         time = time.addSecs(-1)
         self.text_timer.setText(time.toString("hh:mm:ss"))
-        self.text_timer.setText(QFont("Time", 36,QFont.bolb))
+        self.text_timer.setText(QFont("Time", 36,QFont.Bold))
         self.text_timer.setStylesheet("Color: rgb(0,0,0)")
         if time.toString("hh:mm:ss") == "00:00:00":
             self.timer.stop()
@@ -116,7 +120,7 @@ class TestWin(QWidget):
         global Time
         time = time.addSecs(-1)
         self.text_timer.setText(time.toString("hh:mm:ss")[6:8])
-        self.text_timer.setFont(QFont("Times", 36, QFont.bolb))
+        self.text_timer.setFont(QFont("Times", 36, QFont.Bold))
         self.text_timer.setStyleSheet("Color: rgb(0,0,0)")
         if time.toString("hh:mm:ss") == "00,00,00":
             self.timer.stop()
@@ -130,7 +134,7 @@ class TestWin(QWidget):
             self.text_timer.setStyleSheet("color: rgb(0,225,0)")
         else:
             self.text_timer.setStyleSheet("color: rgb(0, 0, 0)")
-        self.text_timer.setFont(QFont("Times", 36, QFont.bold))
+        self.text_timer.setFont(QFont("Times", 36, QFont.Bold))
         if time.toString("hh:mm:ss") == "00:00:00":
             self.timer.stop()
 
